@@ -10,18 +10,18 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.persistence.EntityManager;
 
 @RestController
-public class CustomerController {
+public class PersonController {
 
     @Autowired
     private EntityManager entityManager;
 
-    @RequestMapping("/customer")
-    public Customer customer(@RequestParam(value="name", defaultValue="Jack") String name) {
-        QCustomer customer = QCustomer.customer;
+    @RequestMapping("/person")
+    public Person person(@RequestParam(value="name", defaultValue="Jack") String name) {
+        QPerson person = QPerson.person;
         JPAQuery<?> query = new JPAQuery<Void>(entityManager);
-        Customer result = query.select(customer)
-                .from(customer)
-                .where(customer.firstName.eq(name))
+        Person result = query.select(person)
+                .from(person)
+                .where(person.firstName.eq(name))
                 .fetchOne();
         return result;
     }
