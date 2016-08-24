@@ -1,15 +1,22 @@
 package poc;
 
+import com.querydsl.jpa.impl.JPAQuery;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 
+import javax.persistence.EntityManager;
+
 @SpringBootApplication
 public class Application {
+
+	@Autowired
+	private EntityManager entityManager;
 
 	private static final Logger log = LoggerFactory.getLogger(Application.class);
 
@@ -49,7 +56,16 @@ public class Application {
 				log.info(bauer.toString());
 			}
             log.info("");
+
+			// Test querydsl
+			QCustomer cust = QCustomer.customer;
+			JPAQuery<?> query = new JPAQuery<Void>(entityManager);
+			Customer jack = query.select(cust)
+					.from(cust)
+					.where(cust.firstName.eq("Jack"))
+					.fetchOne();
+			log.info("-------------QDSL------------------");
+			log.info(jack.toString());
 		};
 	}
-
 }
