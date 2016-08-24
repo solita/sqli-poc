@@ -11,7 +11,9 @@ public class Customer {
     @Id
     @GeneratedValue(strategy=GenerationType.AUTO)
     private long id;
+
     private String firstName;
+
     private String lastName;
 
     protected Customer() {}
@@ -26,6 +28,18 @@ public class Customer {
         return String.format(
                 "Customer[id=%d, firstName='%s', lastName='%s']",
                 id, firstName, lastName);
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
     }
 
 }
