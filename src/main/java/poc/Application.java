@@ -25,47 +25,15 @@ public class Application {
 	}
 
 	@Bean
-	public CommandLineRunner demo(PersonRepository repository) {
+	public CommandLineRunner demo(PersonRepository personRepository, PlaceRepository placeRepository) {
 		return (args) -> {
-			// save a couple of customers
-			repository.save(new Person("Jack", "Bauer"));
-			repository.save(new Person("Chloe", "O'Brian"));
-			repository.save(new Person("Kim", "Bauer"));
-			repository.save(new Person("David", "Palmer"));
-			repository.save(new Person("Michelle", "Dessler"));
+			personRepository.save(new Person("Hupu", "Ankka"));
+			personRepository.save(new Person("Tupu", "Ankka"));
+			personRepository.save(new Person("Lupu", "Ankka"));
 
-			// fetch all customers
-			log.info("Customers found with findAll():");
-			log.info("-------------------------------");
-			for (Person person : repository.findAll()) {
-				log.info(person.toString());
-			}
-            log.info("");
-
-			// fetch an individual person by ID
-			Person person = repository.findOne(1L);
-			log.info("Person found with findOne(1L):");
-			log.info("--------------------------------");
-			log.info(person.toString());
-            log.info("");
-
-			// fetch customers by last name
-			log.info("Person found with findByLastName('Bauer'):");
-			log.info("--------------------------------------------");
-			for (Person bauer : repository.findByLastName("Bauer")) {
-				log.info(bauer.toString());
-			}
-            log.info("");
-
-			// Test querydsl
-			QPerson person2 = QPerson.person;
-			JPAQuery<?> query = new JPAQuery<Void>(entityManager);
-			Person jack = query.select(person2)
-					.from(person2)
-					.where(person2.firstName.eq("Jack"))
-					.fetchOne();
-			log.info("-------------QDSL------------------");
-			log.info(jack.toString());
+			placeRepository.save(new Place("Oulu", "Finland", "Europe"));
+			placeRepository.save(new Place("Tampere", "Finland", "Europe"));
+			placeRepository.save(new Place("Helsinki", "Finland", "Europe"));
 		};
 	}
 }
