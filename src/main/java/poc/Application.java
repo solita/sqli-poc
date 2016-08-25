@@ -27,7 +27,7 @@ public class Application {
 		return (args) -> {
 			personRepository.save(new Person("Hupu", "Ankka", "SAD"));
 			personRepository.save(new Person("Tupu", "Ankka", "EVIL"));
-			personRepository.save(new Person("Lupu", "Ankka", "THINGS")); 
+			personRepository.save(new Person("Lupus", "Ankka", "THINGS")); 
 		};
 	}
 }
