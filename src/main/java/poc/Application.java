@@ -23,15 +23,11 @@ public class Application {
 	}
 
 	@Bean
-	public CommandLineRunner demo(PersonRepository personRepository, PlaceRepository placeRepository) {
+	public CommandLineRunner demo(PersonRepository personRepository) {
 		return (args) -> {
 			personRepository.save(new Person("Hupu", "Ankka", "SAD"));
 			personRepository.save(new Person("Tupu", "Ankka", "EVIL"));
-			personRepository.save(new Person("Lupu", "Ankka", "THINGS"));
-
-			placeRepository.save(new Place("Oulu", "Finland", "Europe"));
-			placeRepository.save(new Place("Tampere", "Finland", "Europe"));
-			placeRepository.save(new Place("Helsinki", "Finland", "Europe"));
+			personRepository.save(new Person("Lupu", "Ankka", "THINGS")); 
 		};
 	}
 }
