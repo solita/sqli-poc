@@ -1,8 +1,8 @@
 PoC for SQL injection bug found in Solita Webhack 2016.
 
-Founders: Niklas Särökaari, Joona Immonen
-Analysis: Arto Santala, Niklas Särökaari, Joona Immonen, Antti Virtanen, Michael Holopainen
-PoC: Antti Ahola, Antti Virtanen
+* Founders: Niklas Särökaari, Joona Immonen
+* Analysis: Arto Santala, Niklas Särökaari, Joona Immonen, Antti Virtanen, Michael Holopainen
+* PoC: Antti Ahola, Antti Virtanen
 
 ## The problem briefly
 
