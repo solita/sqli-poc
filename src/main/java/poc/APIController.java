@@ -1,11 +1,14 @@
 package poc;
 
 
+import java.util.Arrays;
 import java.util.List;
 
 import javax.persistence.EntityManager;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.repository.query.QueryUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -19,12 +22,36 @@ public class APIController {
 
     @Autowired
     private EntityManager entityManager;
+    
+    @Autowired
+    private PersonRepository personRepo;
 
+    @RequestMapping("/personfind")
+    public Iterable<Person> personFind(@RequestParam(value="order", defaultValue="firstName") String order) {
+      return personRepo.findBySearchTerm("Ankka", new Sort(order));
+    }
+    
+    // https://www.notsosecure.com/injection-in-order-by-clause/
+    // https://www.petrikainulainen.net/programming/spring-framework/spring-data-jpa-tutorial-part-six-sorting/
     @RequestMapping("/personlist")
-    public List<Person> personList(@RequestParam(value="order", defaultValue="firstName") String order) {
+    public Iterable<Person> personList(@RequestParam(value="order", defaultValue="firstName") String order) {
+      return personRepo.findAll(new Sort(order));
+          
+      
+      /*
+      Iterable<Person> 
+      List<T> target = new ArrayList<>();
+      source.forEach(target::add);
+      return 
         QPerson person = QPerson.person;
         JPAQuery<?> query = new JPAQuery<Void>(entityManager);
         PathBuilder orderByExpression = new PathBuilder(Object.class, "person");
+        
+        String sortedQuery = QueryUtils.applySorting("select person from poc.Person person", new Sort(order));
+        
+//        org.springframework.data.jpa.repository.support.Querydsl
+        //buildOrderPropertyPathFrom();
+//        OrderByExpression obe = new 
         OrderSpecifier o = new OrderSpecifier(com.querydsl.core.types.Order.DESC, 
             orderByExpression.get(order));
         List<Person> result = query.select(person)
@@ -32,6 +59,7 @@ public class APIController {
                 .orderBy(o)
                 .fetch();
         return result;
+        */
     }
 
     @RequestMapping("/person")
