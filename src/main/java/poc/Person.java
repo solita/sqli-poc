@@ -15,12 +15,15 @@ public class Person {
     private String firstName;
 
     private String lastName;
+    
+    private String secretHash;
 
     protected Person() {}
 
-    public Person(String firstName, String lastName) {
+    public Person(String firstName, String lastName, String secretHash) {
         this.firstName = firstName;
         this.lastName = lastName;
+        this.secretHash = secretHash;
     }
 
     @Override
@@ -40,6 +43,10 @@ public class Person {
 
     public String getLastName() {
         return lastName;
+    }
+    
+    public String getSecretHash() {
+      return secretHash;      
     }
 
 }

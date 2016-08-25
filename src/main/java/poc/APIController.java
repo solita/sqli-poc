@@ -1,20 +1,17 @@
 package poc;
 
 
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.EntityManager;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
-import org.springframework.data.jpa.repository.query.QueryUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.querydsl.core.types.OrderSpecifier;
-import com.querydsl.core.types.dsl.PathBuilder;
 import com.querydsl.jpa.impl.JPAQuery;
 
 @RestController
@@ -27,8 +24,13 @@ public class APIController {
     private PersonRepository personRepo;
 
     @RequestMapping("/personfind")
-    public Iterable<Person> personFind(@RequestParam(value="order", defaultValue="firstName") String order) {
-      return personRepo.findBySearchTerm("Ankka", new Sort(order));
+    public Iterable<PersonDTO> personFind(@RequestParam(value="order", defaultValue="firstName") String order) {
+      Iterable<Person> persons = personRepo.findBySearchTerm("Ankka", new Sort(order));
+      List<PersonDTO> l = new ArrayList<PersonDTO>();
+      for (Person p : persons) {
+        l.add(new PersonDTO(p.getId(), p.getFirstName(), p.getLastName()));
+      }
+      return l;
     }
     
     // https://www.notsosecure.com/injection-in-order-by-clause/
