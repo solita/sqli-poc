@@ -1,4 +1,4 @@
-PoC for SQL injection bug found in Solita Webhack 2016.
+PoC for blind SQL injection bug found in [Solita Webhack 2016](http://www.webhack.fi/).
 
 * Founders: Niklas Särökaari, Joona Immonen
 * Analysis: Arto Santala, Niklas Särökaari, Joona Immonen, Antti Virtanen, Michael Holopainen
@@ -6,18 +6,18 @@ PoC for SQL injection bug found in Solita Webhack 2016.
 
 ## The problem briefly
 
-Spring data relies on helper class QueryUtils, which does the following:
+[Spring Data]http://projects.spring.io/spring-data/) relies on helper class QueryUtils, which does the following:
 
 ```
 QueryUtils.applySorting("select person from Person person", new Sort("firstName"))
 ```
 
-Effectively this doesn't validate or escape the string inside Sort properly. This method is not normally
+Effectively this doesn't validate or escape the string given to *Sort* constructor properly. This method is not normally
 accessed directly by application developers as creating raw queries with plain strings is not a good practice, but
 relatively innocent code can inadvertently contain SQL injection because of this. The PoC demonsrates how this
-might realistically happen (and did happen).
+might realistically happen (and did happen in our real-life application).
 
-Many tutorials for Spring Data and Spring JPA explain that it's possible to create sortable queries easily, without actually worrying about SQL in this manner:
+Many tutorials for [Spring Data JPA](http://projects.spring.io/spring-data-jpa/) explain that it's possible to create sortable queries easily, without actually worrying about SQL in this manner:
 
 ```
 interface PersonRepository extends PagingAndSortingRepository<Person, Long> {
@@ -39,17 +39,16 @@ The query doesn't contain *ORDER BY* but Spring will handle it, using the aforem
       // mapping to PersonDTO omitted.
 ```
 
-Search paramter *term* gets properly sanitized, but parameter *sort* will not be sanitized in this case. 
+Search parameter *term* gets properly sanitized, but parameter *sort* will not be sanitized in this case. 
 
 ## How to exploit?
 
-Exploiting is not as straightforward as it would seem, because it depends on multiple factors. The query is not a raw SQL query and tricks like "union all select * from .." may not work. It might be a JPQL-query or HQL query, but still exploitable. See [HQL for pentesting](http://paulsec.github.io/blog/2014/05/05/blind-hql-injection-in-rest-api-using-h2-dbms/) for further ideas.
+Exploiting is not as straightforward as it would seem, because it depends on multiple factors. The query is not a raw SQL query and tricks like ```"union all select * from .."``` may not work. It might be a JPQL-query or HQL query, but still exploitable. See [HQL for pentesting](http://paulsec.github.io/blog/2014/05/05/blind-hql-injection-in-rest-api-using-h2-dbms/) for further ideas.
 
 ### A short example:
 
-The search term selects only two records from the database. Ordering by *firstName* yields Huppu,Tuppu. 
+The search term selects only two records from the database. Ordering by *firstName* yields Huppu,Tuppu. Boolean blind HQL injection is possible by checking if the order changes. The content of a secret hash can be deduced by playing with the *order* parameter. 
 
-The content of a secret hash can be deduced by playing with the order parameter. 
 ![before](sqlmapping_1.png)
 
 ![after](sqlmapping_2.png)
@@ -68,9 +67,9 @@ select person0_.id as id1_1_, person0_.first_name as first_na2_1_, person0_.last
 
 ## Suggestions 
 
-* Spring Data should sanitize the strings encapsulated in the Order class. This might mean that some valid, but weird, definitions would no longer work, but for the majority of programmers this should be the default behavior. And it's possible to introduce a static factory method to create "unsafe Order" for the marginal cases. This might break some of the current applications.
+* Spring Data should sanitize the strings encapsulated in the *Order* class. This might mean that some valid, but weird, definitions would no longer work, but for the majority of programmers this should be the default behavior. And it's possible to introduce a static factory method to create "unsafe Order" for the marginal cases. This might break some of the current applications.
 
-* If Order will not be changed, introduce a static factory method to create "safe Order" and warn programmers that the current best practice is vulnerable and prone to errors.
+* If *Order* will not be changed, introduce a static factory method to create "safe Order" and warn programmers that the current best practice is vulnerable and prone to errors.
 
 * Meanwhile, a workaround is to sanitize the order in the application level using something like this:
 
