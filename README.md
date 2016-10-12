@@ -6,7 +6,7 @@ PoC for blind SQL injection bug found in [Solita Webhack 2016](http://www.webhac
 
 CVE: (https://pivotal.io/security/cve-2016-6652)
 
-This has been fixed in Spring Data with this commit: (https://github.com/spring-projects/spring-data-jpa/commit/b8e7fe)
+This has been fixed in Spring Data, version 1.9.5, with this commit: (https://github.com/spring-projects/spring-data-jpa/commit/b8e7fe)
 
 ## The problem briefly
 
