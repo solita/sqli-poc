@@ -4,6 +4,10 @@ PoC for blind SQL injection bug found in [Solita Webhack 2016](http://www.webhac
 * Analysis: Arto Santala, Niklas Särökaari, Joona Immonen, Antti Virtanen, Michael Holopainen
 * PoC: Antti Ahola, Antti Virtanen
 
+CVE: (https://pivotal.io/security/cve-2016-6652)
+
+This has been fixed in Spring Data with this commit: (https://github.com/spring-projects/spring-data-jpa/commit/b8e7fe)
+
 ## The problem briefly
 
 [Spring Data](http://projects.spring.io/spring-data/) relies on helper class QueryUtils, which does the following:
