@@ -6,7 +6,7 @@ PoC for blind SQL injection bug found in [Solita Webhack 2016](http://www.webhac
 
 ## The problem briefly
 
-[Spring Data]http://projects.spring.io/spring-data/) relies on helper class QueryUtils, which does the following:
+[Spring Data](http://projects.spring.io/spring-data/) relies on helper class QueryUtils, which does the following:
 
 ```
 QueryUtils.applySorting("select person from Person person", new Sort("firstName"))
